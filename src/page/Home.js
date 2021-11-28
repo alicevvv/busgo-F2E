@@ -18,7 +18,7 @@ function Home() {
       <MyNav />
       <Row className="minh">
         <Col xs={24} md={24} xl={12}>
-          <div className="flex-column align-items-center">
+          <div className="flex-column align-items-center mt-3">
             <Select
               suffixIcon={<CaretDownOutlined style={{ color: "#343E4B" }} />}
               defaultValue="查詢目的地"
@@ -40,7 +40,7 @@ function Home() {
           </div>
         </Col>
         <Col xs={0} sm={0} md={0} xl={12} className="bg-light">
-          <div className="flex-column align-items-center">
+          <div className="flex-column align-items-center mt-3">
             <div
               className="flex-row"
               style={{

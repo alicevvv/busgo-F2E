@@ -2,6 +2,7 @@
     --deep-gray: #343E4B;
     --light-gray: #FBFBFB;
     --yellow: #E2A12E;
+    --orange: #F17400;
     --white: #ffffff;
     --light-bg: #FBFBF8;
     --secondary: #999FA5;
@@ -92,6 +93,18 @@ span {
     margin-bottom: 1.5rem;
 }
 
+.mt-1 {
+    margin-top: 0.5rem;
+}
+
+.mt-3 {
+    margin-top: 1rem;
+}
+
+.mt-5 {
+    margin-top: 2rem;
+}
+
 
 /* width and height */
 
@@ -115,6 +128,14 @@ span {
     background-color: var(--light-bg);
 }
 
+.bg-yellow {
+    background-color: var(--yellow);
+}
+
+.bg-primary {
+    background-color: var(--deep-gray);
+}
+
 
 /* button */
 
@@ -129,8 +150,16 @@ span {
     opacity: 0.8;
 }
 
+.btn-businfo {
+    background-color: transparent !important;
+    color: var(--deep-gray);
+    padding: 0px 0px 0px 4px;
+    border: none;
+    font-size: 1.5rem;
+}
+
 .menuBar a {
-    padding: 12px 32px !important;
+    padding: 0.75rem 2rem !important;
 }
 
 .btn-login {
@@ -146,9 +175,13 @@ span {
 /* text */
 
 .text-white {
-    color: #ffffff !important;
+    color: var(--white)!important;
     font-weight: 700;
     font-size: 16px;
+}
+
+.text-primary {
+    color: var(--deep-gray) !important;
 }
 
 .weight700 {
@@ -209,4 +242,59 @@ span {
 .loginInputs .ant-input:focus {
     border-color: none !important;
     box-shadow: none !important;
+}
+
+
+/* radio */
+
+.ant-radio-inner {
+    border-color: var(--deep-gray) !important;
+}
+
+.ant-radio-inner::after {
+    background-color: var(--orange) !important;
+}
+
+
+/* badge */
+
+.bustimeBadge {
+    width: 76px;
+    padding: 8px 16px;
+    margin: 8px 16px;
+    border-radius: 28px;
+    text-align: center;
+    color: var(--white);
+}
+
+.busstation {
+    padding: 8px;
+    margin: 8px 0px;
+}
+
+.busradio {
+    padding: 16px 0px;
+}
+
+.busdegree {
+    width: 94px;
+    padding: 8px 4px;
+    margin: 8px 0px;
+    text-align: center;
+    border-radius: 8px;
+    border-width: 2px;
+    border-style: solid;
+}
+
+
+/* border-color */
+
+.degree-yellow {
+    color: var(--yellow);
+    border-color: var(--yellow);
+}
+
+.degree-orange {
+    color: var(--orange);
+    border-color: var(--orange);
 }

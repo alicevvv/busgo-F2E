@@ -1,11 +1,102 @@
 [{
-        "id": "1",
-        "number": "932",
-        "degree": "low"
-    },
-    {
-        "id": "2",
-        "number": "905",
-        "degree": "medium"
-    }
-]
+    "busid": "932",
+    "busData": [{
+            "id": "1",
+            "title": "未發車",
+            "station": "姑娘廟",
+            "like": false
+        },
+        {
+            "id": "2",
+            "title": "未發車",
+            "station": "大義路口",
+            "like": false
+        },
+        {
+            "id": "3",
+            "title": "未發車",
+            "station": "學成大雅路口",
+            "like": false
+        },
+        {
+            "id": "4",
+            "title": "進站中",
+            "station": "學成大成路口",
+            "like": false,
+            "degree": "normal"
+        },
+        {
+            "id": "5",
+            "title": "約2分",
+            "station": "南園",
+            "like": false
+        },
+        {
+            "id": "6",
+            "title": "約3分",
+            "station": "北美館社區",
+            "like": false
+        },
+        {
+            "id": "7",
+            "title": "約3分",
+            "station": "桃子腳國中小",
+            "like": false
+        },
+        {
+            "id": "8",
+            "title": "約4分",
+            "station": "森林公園",
+            "like": false
+        },
+        {
+            "id": "9",
+            "title": "約6分",
+            "station": "大學風呂",
+            "like": false
+        },
+        {
+            "id": "10",
+            "title": "約6分",
+            "station": "海洋公園",
+            "like": false
+        },
+        {
+            "id": "11",
+            "title": "約8分",
+            "station": "學勤路",
+            "like": false
+        },
+        {
+            "id": "12",
+            "title": "進站中",
+            "station": "台北大學正門",
+            "like": false,
+            "degree": "high"
+        },
+        {
+            "id": "13",
+            "title": "約2分",
+            "station": "大學學成路口",
+            "like": false
+        },
+        {
+            "id": "14",
+            "title": "約3分",
+            "station": "龍恩公園",
+            "like": false
+        },
+        {
+            "id": "15",
+            "title": "約5分",
+            "station": "捷運府中站",
+            "like": false
+        },
+        {
+            "id": "16",
+            "title": "約7分",
+            "station": "捷運板橋站",
+            "like": false
+        }
+    ]
+}]
