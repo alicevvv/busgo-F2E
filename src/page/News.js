@@ -16,7 +16,10 @@ export default function News() {
   return (
     <div className="wrapper">
       <MyNav />
-      <Row className="minh"></Row>
+      <Row className="minh">
+        <Col xs={24} md={24} xl={12}></Col>
+        <Col xs={0} md={0} xl={12} className="bg-light"></Col>
+      </Row>
       <MyFooter />
     </div>
   );

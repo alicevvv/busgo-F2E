@@ -41,14 +41,14 @@ export default function Path() {
               <img src="./img/bus_m.svg"></img>
             </div>
             <div className="mt-3">公車擁擠度：普通</div>
-            <div className="mt-5">
+            <div className="mt-5 mb-4">
               <img src="./img/bus_degree.svg"></img>
             </div>
           </div>
         </Col>
         <Col xs={0} md={0} xl={{ span: 2 }}></Col>
-        <Col xs={0} md={0} xl={2} className="bg-light"></Col>
-        <Col xs={0} sm={0} md={0} xl={8} className="bg-light">
+        <Col xs={2} md={2} xl={2} className="bg-light"></Col>
+        <Col xs={20} sm={20} md={20} xl={8} className="bg-light">
           <div
             class="mt-3"
             style={{
@@ -83,6 +83,7 @@ export default function Path() {
             </Radio.Group>
           </div>
           <div
+          className="mb-4"
             style={{
               marginTop: "40px",
               display: "flex",
@@ -96,7 +97,7 @@ export default function Path() {
             <BusStation number={number} />
           </div>
         </Col>
-        <Col xs={0} md={0} xl={2} className="bg-light"></Col>
+        <Col xs={2} md={2} xl={2} className="bg-light"></Col>
       </Row>
       <MyFooter />
     </div>
