@@ -63,13 +63,8 @@ export default function MyNav() {
       </Row>
       <Row>
         <Col xs={24} ms={24} xl={0} style={{ zIndex: "0" }}>
-          <div className={`w100 mb-4 xs_navbar ${isActive ? "" : "d-none"}`}>
-            <Link
-              to="./login"
-              className={`xs_nav bg-primary text-white ${
-                isActive ? "" : "d-none"
-              }`}
-            >
+          <div className={`w100 mb-4 xs_navbar ${isActive ? "d-none" : ""}`}>
+            <Link to="./login" className="xs_nav bg-primary text-white">
               <div className="bg-primary py-3">會員登入/會員註冊</div>
             </Link>
             <Link to="./news" className="xs_nav">

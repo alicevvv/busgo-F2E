@@ -306,7 +306,7 @@ span {
   vertical-align: middle;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
   .btn-navbar {
     display: none;
   }
