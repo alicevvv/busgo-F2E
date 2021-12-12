@@ -2,9 +2,9 @@ import { Space, Row, Col, Radio } from "antd";
 import busdata from "../json/BusData.json";
 
 const findDegree = (degree) => {
-  if (degree == "normal") {
+  if (degree === "normal") {
     return <div className="busdegree degree-yellow">FAD-061</div>;
-  } else if (degree == "high") {
+  } else if (degree === "high") {
     return <div className="busdegree degree-orange">FAD-053</div>;
   }
 };

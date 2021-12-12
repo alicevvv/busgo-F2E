@@ -26,7 +26,7 @@ span {
 
 .wrapper {
   width: 100vw;
-  min-height: calc(100vh - 285px) !important;
+  min-height: calc(100vh - 280px) !important;
 }
 
 .nav {
@@ -122,8 +122,8 @@ span {
 }
 
 .minh {
-  /* min-height: calc(100vh - 285px) !important; */
-  min-height: 665px;
+  min-height: calc(100vh - 280px) !important;
+  /* min-height: 665px; */
 }
 
 /* background color */

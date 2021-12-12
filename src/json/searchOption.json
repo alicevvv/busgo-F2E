@@ -1,0 +1,47 @@
+[
+    {
+        "firstC": "0",
+        "options": [
+            {
+                "optionName": "0"
+            },
+            {
+                "optionName": "02"
+            },
+            {
+                "optionName": "03"
+            }
+        ]
+    },
+    {
+        "firstC": "1",
+        "options": [
+            {
+                "optionName": "10"
+            },
+            {
+                "optionName": "12"
+            },
+            {
+                "optionName": "130"
+            },
+            {
+                "optionName": "129"
+            }
+        ]
+    },
+    {
+        "firstC": "2",
+        "options": [
+            {
+                "optionName": "20"
+            },
+            {
+                "optionName": "24"
+            },
+            {
+                "optionName": "28"
+            }
+        ]
+    }
+]

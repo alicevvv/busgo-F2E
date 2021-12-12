@@ -4,7 +4,6 @@ import { Row, Col, Divider, Input, Space, Radio, Modal, Button } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import BusStation from "../component/BusStation";
-import busstation from "../json/BusData.json";
 
 const { Search } = Input;
 const number = "932";

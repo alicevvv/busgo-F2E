@@ -4,15 +4,51 @@ import { Row, Col, Select, Input, Button, Typography, List } from "antd";
 import { CaretDownOutlined } from "@ant-design/icons";
 import newsdata from "../json/Newsdata.json";
 import { Link } from "react-router-dom";
+import { useState ,useEffect} from "react";
+import searchOption from "../json/searchOption.json"
+import { getAllRoutes } from "../api/busApi";
 
 const { Option } = Select;
 const { Search } = Input;
 const { Title } = Typography;
-const onSearch = (value) => {
-  console.log(value);
-  window.location.href = "./path";
-};
+
+
 function Home() {
+  const [busName,setbusName] = useState("");
+  const [first,setFirst] = useState(1);
+  const [routeData,setRouteData]= useState([]);
+
+  const onSearch = (value) => {
+    console.log('value'+value);
+    window.location.href='./path';
+  };
+
+  // async function _search_options(searchName) {
+  //   setRouteData([]);
+  //   console.log(searchName);
+  //   if(searchName.value==='none') return;
+  //   const allRoutes = await getAllRoutes(searchName.value);
+  // }
+
+  async function getRoutes(){
+    let nameDatas = [];
+    setRouteData([]);
+    const allRoutes = await getAllRoutes();
+    if(allRoutes){
+      for(let i=0;i< allRoutes.length;i++){
+        const nameData={
+          routeName: allRoutes[i].routeName
+        };
+        nameDatas.push(nameData);
+      }
+      setRouteData(nameDatas);
+    }
+  }
+
+  useEffect(()=>{
+    getRoutes();
+  },[]);
+
   return (
     <div className="wrapper">
       <MyNav />
@@ -34,8 +70,14 @@ function Home() {
               // id="route_input"
               style={{ width: "295px", fontSize: 16, marginBottom: "100px" }}
               onSearch={onSearch}
+              list="data"
               enterButton
             />
+            <datalist id="data">
+              {routeData.map((item)=>
+              <option value={item.routeName}></option>
+              )}
+            </datalist>
             <img src="./img/mascot.svg"></img>
           </div>
         </Col>
