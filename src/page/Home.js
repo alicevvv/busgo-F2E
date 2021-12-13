@@ -62,8 +62,8 @@ function Home() {
               bordered={false}
               className="mb-4 weight700"
             >
-              <Option value="查詢目的地">查詢目的地</Option>
               <Option value="查詢路線/站牌">查詢路線/站牌</Option>
+              <Option value="查詢目的地">查詢目的地</Option>
             </Select>
             <Search
               placeholder="輸入公車路線/站牌"
