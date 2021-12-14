@@ -86,7 +86,7 @@ function Home() {
               id="searchInput"
               onChange={getSearchName}
             />
-            <Link to={`./path:${getBusName}`}>
+            <Link to={'./path'}>
               <Button type="primary" icon={<SearchOutlined />}
               style={{width:'49px',height:'35px'}}
               />

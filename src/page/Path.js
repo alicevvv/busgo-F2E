@@ -18,8 +18,8 @@ const findDegree = (degree) => {
 };
 
 
-export default function Path(pathname) {
-  console.log(pathname.value);
+export default function Path() {
+  // console.log(pathname.value);
   // alert(pathname);
   // model
   const [isModalVisible, setIsModalVisible] = useState(false);
