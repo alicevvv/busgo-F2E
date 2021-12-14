@@ -1,12 +1,13 @@
 import MyNav from "../component/MyNav";
 import MyFooter from "../component/Footer";
-import { Row, Col, Select, Input, Button, Typography, List } from "antd";
-import { CaretDownOutlined } from "@ant-design/icons";
+import { Row, Col, Select, Input, Typography, List, Button } from "antd";
+import { CaretDownOutlined,SearchOutlined } from "@ant-design/icons";
 import newsdata from "../json/Newsdata.json";
 import { Link } from "react-router-dom";
-import { useState ,useEffect} from "react";
+import { useState ,useEffect, useContext} from "react";
 import searchOption from "../json/searchOption.json"
 import { getAllRoutes } from "../api/busApi";
+import { StoreContext } from "../store";
 
 const { Option } = Select;
 const { Search } = Input;
@@ -14,14 +15,9 @@ const { Title } = Typography;
 
 
 function Home() {
-  const [busName,setbusName] = useState("");
-  const [first,setFirst] = useState(1);
   const [routeData,setRouteData]= useState([]);
-
-  const onSearch = (value) => {
-    console.log('value'+value);
-    window.location.href='./path';
-  };
+  // const {state:{ busName }, dispatch} = useContext(StoreContext);
+  // console.log(busName);
 
   // async function _search_options(searchName) {
   //   setRouteData([]);
@@ -49,6 +45,13 @@ function Home() {
     getRoutes();
   },[]);
 
+  const [getBusName,setBusName] = useState();
+  
+  const getSearchName=()=>{
+    var val = document.getElementById('searchInput').value;
+    setBusName(val);
+  }
+
   return (
     <div className="wrapper">
       <MyNav />
@@ -57,7 +60,7 @@ function Home() {
           <div className="flex-column align-items-center mt-3">
             <Select
               suffixIcon={<CaretDownOutlined style={{ color: "#343E4B" }} />}
-              defaultValue="查詢目的地"
+              defaultValue="查詢路線/站牌"
               style={{ width: 160, fontSize: "18px" }}
               bordered={false}
               className="mb-4 weight700"
@@ -65,14 +68,31 @@ function Home() {
               <Option value="查詢路線/站牌">查詢路線/站牌</Option>
               <Option value="查詢目的地">查詢目的地</Option>
             </Select>
-            <Search
+            {/* <Search
               placeholder="輸入公車路線/站牌"
               // id="route_input"
               style={{ width: "295px", fontSize: 16, marginBottom: "100px" }}
               onSearch={onSearch}
               list="data"
               enterButton
+            /> */}
+            <div className="d-flex flex-row"
+            style={{marginBottom: "100px"}}
+            >
+            <Input
+              placeholder="輸入公車路線/站牌"
+              style={{ width: "249px", fontSize: 16 }}
+              list="data"
+              id="searchInput"
+              onChange={getSearchName}
             />
+            <Link to={`./path:${getBusName}`}>
+              <Button type="primary" icon={<SearchOutlined />}
+              style={{width:'49px',height:'35px'}}
+              />
+            </Link>
+            
+            </div>
             <datalist id="data">
               {routeData.map((item)=>
               <option value={item.routeName}></option>

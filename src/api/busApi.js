@@ -2,22 +2,6 @@ import axios from ".";
 
 const baseUrl = `https://ptx.transportdata.tw/MOTC`
 
-export const getBusStop = async (city,routeName) => {
-    try{
-        let data= {}
-        let stopData={}
-        let go =[]
-        let back=[]
-
-        let url = `${baseUrl}/v2/Bus/StopOfRoute/City/{City}/{RouteName}?$format=JSON`;
-        const result = await axios.get(url);
-        console.log(result);
-
-    }catch (err){
-        alert('沒有這個路線');
-    }
-}
-
 export const getAllRoutes = async()=>{
     try{
         let data=[]
@@ -35,5 +19,64 @@ export const getAllRoutes = async()=>{
         return data;
     }catch(err){
         alert('找不到路線')
+    }
+}
+
+export const getBusGoStop = async(busName)=>{
+    try{
+        let goData=[]
+        let getData = {}
+        let url = `${baseUrl}/v2/Bus/DisplayStopOfRoute/City/Taipei/${busName}?%24filter=RouteName%2FZh_tw%20eq%20'${busName}'&%24format=JSON`;
+        let result = await axios.get(url);
+        if(result.data){
+            result.data[0].Stops.forEach((element)=>{
+                getData = {
+                    StopName:element.StopName.Zh_tw
+                }
+                goData.push(getData);
+            })
+        }
+        return goData;
+    }catch(err){
+        alert('找不到公車去程站牌')
+    }
+}
+
+export const getBusBackStop = async(busName)=>{
+    try{
+        let backData=[]
+        let getData = {}
+        let url = `${baseUrl}/v2/Bus/DisplayStopOfRoute/City/Taipei/${busName}?%24filter=RouteName%2FZh_tw%20eq%20'${busName}'&%24format=JSON`;
+        let result = await axios.get(url);
+        if(result.data){
+            result.data[1].Stops.forEach((element)=>{
+                getData = {
+                    StopName:element.StopName.Zh_tw
+                }
+                backData.push(getData);
+            })
+        }
+        return backData;
+    }catch(err){
+        alert('找不到公車回程站牌')
+    }
+}
+
+// wait to try
+export const getBusGoInfo = async(busName)=>{
+    try{
+        let url=`${baseUrl}/EstimatedTimeOfArrival/City/Taipei/${busName}?$filter=RouteName/Zh_tw eq '${busName}'&$orderby=StopSequence,Direction&$format=JSON`;
+        let result = await axios.get(url);
+        if(result.data){
+            result.data.forEach((element)=>{
+                console.log(element.PlateNumb);
+                console.log(element.StopID);
+                console.log(element.StopName.Zh_tw);
+                console.log(element.EstimateTime);
+                console.log(element.NextBusTime);
+            })
+        }
+    }catch(err){
+        alert('找不到去程的公車時間資訊');
     }
 }

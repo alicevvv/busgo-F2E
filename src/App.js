@@ -16,7 +16,7 @@ function App() {
           <Route path="/" element={<Home />}></Route>
           <Route path="/news" element={<News />}></Route>
           <Route path="/login" element={<Login />}></Route>
-          <Route path="/path" element={<Path />}></Route>
+          <Route path="/path:pathname" element={<Path />}></Route>
         </Routes>
       </BrowserRouter>
     </StoreProvider>

@@ -4,11 +4,24 @@ import { Row, Col, Divider, Input, Space, Radio, Modal, Button } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import BusStation from "../component/BusStation";
+import busdata from "../json/BusData.json";
+import { getAllRoutes,getBusGoStop } from "../api/busApi";
+import { useEffect } from "react/cjs/react.development";
 
 const { Search } = Input;
-const number = "932";
+const findDegree = (degree) => {
+  if (degree === "normal") {
+    return <div className="busdegree degree-yellow">FAD-061</div>;
+  } else if (degree === "high") {
+    return <div className="busdegree degree-orange">FAD-053</div>;
+  }
+};
 
-export default function Path() {
+
+export default function Path(pathname) {
+  console.log(pathname.value);
+  // alert(pathname);
+  // model
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -16,10 +29,47 @@ export default function Path() {
   const handleOk = () => {
     setIsModalVisible(false);
   };
-
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+  // route data
+  const [routeData,setRouteData]=useState([]);
+  async function getRoutes(){
+    let nameDatas = [];
+    setRouteData([]);
+    const allRoutes = await getAllRoutes();
+    if(allRoutes){
+      for(let i=0;i<allRoutes.length;i++){
+        const nameData = {
+          routeName: allRoutes[i].routeName
+        };
+        nameDatas.push(nameData);
+      }
+      setRouteData(nameDatas);
+    }
+  }
+
+  const [GoBusDatas, setGoBusDatas]=useState([]);
+  const [startStop,setStartStop] = useState('');
+  const [lastStop,setLastStop] = useState('');
+  async function getBusGotoStops(value){
+      const allBusGoStops = await getBusGoStop(value);
+      setGoBusDatas(allBusGoStops);
+      setStartStop(allBusGoStops[0].StopName)
+      setLastStop(allBusGoStops[allBusGoStops.length - 1].StopName)
+  }
+    
+  const [busName,setBusName]=useState([]);
+    useEffect(()=>{
+    getRoutes();
+    getBusGotoStops(278);
+    setBusName(278);
+  },[]);
+  // search
+  const onSearch = (value) =>{
+    getBusGotoStops(value);
+    setBusName(value);
+  }
   return (
     <div className="wrapper">
       <MyNav />
@@ -33,8 +83,15 @@ export default function Path() {
             <Search
               placeholder="輸入公車路線/站牌"
               style={{ width: "295px", fontSize: 16 }}
+              onSearch={onSearch}
+              list="data"
               enterButton
             />
+            <datalist id="data">
+              {routeData.map((item, index)=>
+              <option value={item.routeName} key={index}></option>
+              )}
+            </datalist>
             <div style={{ marginTop: "90px" }}>FAD-061</div>
             <div className="mt-3">
               <img src="./img/bus_m.svg"></img>
@@ -49,7 +106,7 @@ export default function Path() {
         <Col xs={2} md={2} xl={2} className="bg-light"></Col>
         <Col xs={20} sm={20} md={20} xl={8} className="bg-light">
           <div
-            class="mt-3"
+            className=""
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -57,7 +114,7 @@ export default function Path() {
             }}
           >
             <span className="font-normal" style={{ fontSize: "24px" }}>
-              932路線{" "}
+              {busName}路線{" "}
               <Button className="btn-businfo" onClick={showModal}>
                 {<QuestionCircleOutlined />}
               </Button>
@@ -70,14 +127,18 @@ export default function Path() {
               onCancel={handleCancel}
               style={{ borderRadius: "20px" }}
             >
-              <p>Some contents...</p>
-              <p>Some contents...</p>
-              <p>Some contents...</p>
+              <p>起迄站名 : </p>
+              <p>{startStop} - {lastStop}</p>
+              <Divider/>
+              <p>業者服務電話 : 臺北客運 0800-003-307</p>
+              <p>新北市政府交通局公車申訴服務電話 : 02-89682460</p>
             </Modal>
             <Radio.Group name="directionRadioGroup" defaultValue={0}>
               <Space direction="vertical">
-                <Radio value={0}>往三峽北大社區</Radio>
-                <Radio value={1}>往板橋公車站</Radio>
+                <Radio value={0}>去程</Radio> 
+                {/* 往三峽北大社區 */}
+                <Radio value={1}>回程</Radio>
+                {/* 往板橋公車站 */}
               </Space>
             </Radio.Group>
           </div>
@@ -93,7 +154,33 @@ export default function Path() {
               overflowY: "scroll",
             }}
           >
-            <BusStation number={number} />
+            {/* <BusStation number={busName} /> */}
+            <div className="flex-column" style={{ width: "100%" }}>
+      {GoBusDatas.map((item) => {
+        return <Row>
+            <Col span={1}></Col>
+            <Col span={6}>
+              <div className="bustimeBadge bg-yellow text-primary">
+                {/* {busdata.title} */}
+                未發車
+              </div>
+            </Col>
+            <Col span={6}>
+              <div className="busstation">{item.StopName}</div>
+            </Col>
+            <Col span={2}></Col>
+            <Col span={2}>
+              <Radio className="busradio"></Radio>
+            </Col>
+            <Col span={1}></Col>
+            <Col span={5}>
+              {/* {findDegree(busdata.degree)} */}
+              {/* {console.log(item.index)} */}
+              </Col>
+            <Col span={1}></Col>
+          </Row>
+      })}
+    </div>
           </div>
         </Col>
         <Col xs={2} md={2} xl={2} className="bg-light"></Col>

@@ -6,19 +6,18 @@ import {
 export const StoreContext = createContext();
 
 const initialState={
-    page:{
-        title:"No words",
-    }
+    busName:'278'
 }
 
 function reducer(state,action){
     switch(action.type){
-        case SET_BUS_NAME:
-            return{
-                ...state
-            }
-        default:
-            return state;
+        case 'changeBus':{
+            console.log(state);
+            return state
+        }
+        default:{
+            throw new Error(`Error: ${action.type}`)
+        }
     }
 }
 

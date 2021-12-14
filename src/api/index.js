@@ -23,8 +23,6 @@ function GetAuthorizationHeader(){
     ShaObj.update('x-date: '+ GMTString);
     var HMAC = ShaObj.getHMAC("B64");
     var Autorization = 'hmac username="' + AppId + '", algorithm="hmac-sha1", headers="x-date", signature="' + HMAC + '"';
-    console.log('Autorization');
-    console.log(Autorization);
     return{
         Authorization: Autorization,
         "X-Date":GMTString,

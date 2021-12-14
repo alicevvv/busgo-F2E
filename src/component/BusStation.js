@@ -1,20 +1,29 @@
 import { Space, Row, Col, Radio } from "antd";
 import busdata from "../json/BusData.json";
+import {getBusGoStop} from "../api/busApi";
+import { useEffect } from "react/cjs/react.development";
 
-const findDegree = (degree) => {
-  if (degree === "normal") {
-    return <div className="busdegree degree-yellow">FAD-061</div>;
-  } else if (degree === "high") {
-    return <div className="busdegree degree-orange">FAD-053</div>;
-  }
-};
 
-export default function BusStation({ number }) {
+
+export default function BusStation() {
+  // const number = number;
+  // console.log('in busstation : '+ number);
+  // async function getBusInfo(value){
+  //   let busData = [];
+  //   const allBusData = await getBusGoStop(value);
+  //   console.log('in log');
+  //   console.log(allBusData);
+  // }
+  // useEffect(()=>{
+  //   getBusInfo(value);   
+  // })
+
   return (
-    <div className="flex-column" style={{ width: "100%" }}>
+    <>
+    {/* <div className="flex-column" style={{ width: "100%" }}>
       {busdata[0].busData.map((busdata) => {
         return busdata.title === "進站中" ? (
-          <Row>
+          <Row key={busdata.id}>
             <Col span={1}></Col>
             <Col span={6}>
               <div className="bustimeBadge bg-yellow text-primary">
@@ -33,7 +42,7 @@ export default function BusStation({ number }) {
             <Col span={1}></Col>
           </Row>
         ) : (
-          <Row>
+          <Row key={busdata.id}>
             <Col span={1}></Col>
             <Col span={6}>
               <div className="bustimeBadge bg-primary">{busdata.title}</div>
@@ -51,6 +60,7 @@ export default function BusStation({ number }) {
           </Row>
         );
       })}
-    </div>
+    </div> */}
+    </>
   );
 }
