@@ -5,7 +5,7 @@ import { QuestionCircleOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import BusStation from "../component/BusStation";
 import busdata from "../json/BusData.json";
-import { getAllRoutes,getBusGoStop } from "../api/busApi";
+import { getAllRoutes,getBusGoStop,getBusGoInfo } from "../api/busApi";
 import { useEffect } from "react/cjs/react.development";
 
 const { Search } = Input;
@@ -58,12 +58,16 @@ export default function Path() {
       setStartStop(allBusGoStops[0].StopName)
       setLastStop(allBusGoStops[allBusGoStops.length - 1].StopName)
   }
+  async function getBusTime(value){
+    const allTime = await getBusGoInfo(value);
+  }
     
   const [busName,setBusName]=useState([]);
-    useEffect(()=>{
+  useEffect(()=>{
     getRoutes();
     getBusGotoStops(278);
     setBusName(278);
+    getBusTime(278);
   },[]);
   // search
   const onSearch = (value) =>{
