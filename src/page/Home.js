@@ -6,7 +6,7 @@ import newsdata from "../json/Newsdata.json";
 import { Link } from "react-router-dom";
 import { useState ,useEffect, useContext} from "react";
 import searchOption from "../json/searchOption.json"
-import { getAllRoutes } from "../api/busApi";
+import { getAllRoutes, getNews } from "../api/busApi";
 import { StoreContext } from "../store";
 
 const { Option } = Select;
@@ -16,6 +16,7 @@ const { Title } = Typography;
 
 function Home() {
   const [routeData,setRouteData]= useState([]);
+  const [newsData,setNewsData] = useState([]);
   // const {state:{ busName }, dispatch} = useContext(StoreContext);
   // console.log(busName);
 
@@ -40,9 +41,24 @@ function Home() {
       setRouteData(nameDatas);
     }
   }
+  async function getRecentNews(){
+    let allData = [];
+    setNewsData([]);
+    const allNews = await getNews();
+    if(allNews){
+      for(let i=0;i<allNews.length;i++){
+        const data={
+          title: allNews.newsTitle
+        }
+        allData.push(data);
+      }
+      setNewsData(allData);
+    }
+  }
 
   useEffect(()=>{
     getRoutes();
+    getRecentNews();
   },[]);
 
   const [getBusName,setBusName] = useState();
@@ -81,19 +97,19 @@ function Home() {
             >
             <Input
               placeholder="輸入公車路線/站牌"
-              style={{ width: "249px", fontSize: 16 }}
+              style={{ width: "249px", fontSize: 16}}
               list="data"
               id="searchInput"
               onChange={getSearchName}
             />
-            <Link to={`./path/${getBusName}`}>
+            <Link to={`./path:${getBusName}`}>
               <Button type="primary" icon={<SearchOutlined />}
               style={{width:'49px',height:'35px'}}
               />
             </Link>
             
             </div>
-            <datalist id="data">
+            <datalist id="data" style={{height:'5em',overflow:'hidden'}}>
               {routeData.map((item)=>
               <option value={item.routeName}></option>
               )}

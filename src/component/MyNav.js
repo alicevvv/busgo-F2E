@@ -43,10 +43,10 @@ export default function MyNav() {
                 <NavLink to="/news" className="p-3">
                   最新消息
                 </NavLink>
-                <NavLink to="/path" className="p-3">
+                <NavLink to="/" className="p-3">
                   附近站牌
                 </NavLink>
-                <NavLink to="/path" className="p-3">
+                <NavLink to="/" className="p-3">
                   路線規劃
                 </NavLink>
                 <NavLink to="/" className="p-3">

@@ -1,14 +1,15 @@
 import MyNav from "../component/MyNav";
 import MyFooter from "../component/Footer";
-import { Row, Col, Divider, Input, Space, Radio, Modal, Button } from "antd";
-import { QuestionCircleOutlined } from "@ant-design/icons";
+import { Row, Col, Divider, Input, Space, Radio, Modal, Button, Spin } from "antd";
+import { QuestionCircleOutlined,LoadingOutlined} from "@ant-design/icons";
 import React, { useState } from "react";
 import BusStation from "../component/BusStation";
 import busdata from "../json/BusData.json";
-import { getAllRoutes,getBusGoStop,getBusGoInfo } from "../api/busApi";
+import { getAllRoutes,getBusGoStop } from "../api/busApi";
 import { useEffect } from "react/cjs/react.development";
 
 const { Search } = Input;
+const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const findDegree = (degree) => {
   if (degree === "normal") {
     return <div className="busdegree degree-yellow">FAD-061</div>;
@@ -23,6 +24,7 @@ export default function Path() {
   // alert(pathname);
   // model
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isLoading,setIsLoading] = useState(true);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -34,6 +36,7 @@ export default function Path() {
   };
   // route data
   const [routeData,setRouteData]=useState([]);
+
   async function getRoutes(){
     let nameDatas = [];
     setRouteData([]);
@@ -55,11 +58,11 @@ export default function Path() {
   async function getBusGotoStops(value){
       const allBusGoStops = await getBusGoStop(value);
       setGoBusDatas(allBusGoStops);
-      setStartStop(allBusGoStops[0].StopName)
-      setLastStop(allBusGoStops[allBusGoStops.length - 1].StopName)
+      // setStartStop(allBusGoStops.StopName)
+      // setLastStop(allBusGoStops[allBusGoStops.length - 1].StopName)
   }
   async function getBusTime(value){
-    const allTime = await getBusGoInfo(value);
+    // const allTime = await getBusGoTime(value);
   }
     
   const [busName,setBusName]=useState([]);
@@ -67,12 +70,20 @@ export default function Path() {
     getRoutes();
     getBusGotoStops(278);
     setBusName(278);
-    getBusTime(278);
+    setTimeout(()=>{
+      setIsLoading(false);
+    },2000);
+    // getBusTime(278);
   },[]);
   // search
   const onSearch = (value) =>{
+    setIsLoading(true);
+    setTimeout(()=>{
+      setIsLoading(false);
+    },2000);
     getBusGotoStops(value);
     setBusName(value);
+    getBusTime(value);
   }
   return (
     <div className="wrapper">
@@ -91,7 +102,7 @@ export default function Path() {
               list="data"
               enterButton
             />
-            <datalist id="data">
+            <datalist id="data" style={{height:'5em',overflow:'hidden'}}>
               {routeData.map((item, index)=>
               <option value={item.routeName} key={index}></option>
               )}
@@ -125,17 +136,20 @@ export default function Path() {
               {/* <div style={{ fontSize: "16px" }}>已收藏個站牌</div> */}
             </span>
             <Modal
-              title="Basic Modal"
+              title=""
               visible={isModalVisible}
               onOk={handleOk}
               onCancel={handleCancel}
               style={{ borderRadius: "20px" }}
+              footer={false}
             >
-              <p>起迄站名 : </p>
-              <p>{startStop} - {lastStop}</p>
-              <Divider/>
-              <p>業者服務電話 : 臺北客運 0800-003-307</p>
-              <p>新北市政府交通局公車申訴服務電話 : 02-89682460</p>
+              <div style={{padding:'20px'}}>
+                <p>起迄站名 : </p>
+                <p>{startStop} - {lastStop}</p>
+                <Divider/>
+                <p>業者服務電話 : 臺北客運 0800-003-307</p>
+                <p>新北市政府交通局公車申訴服務電話 : 02-89682460</p>
+              </div>
             </Modal>
             <Radio.Group name="directionRadioGroup" defaultValue={0}>
               <Space direction="vertical">
@@ -158,33 +172,40 @@ export default function Path() {
               overflowY: "scroll",
             }}
           >
-            {/* <BusStation number={busName} /> */}
+            { console.log(isLoading),
+              isLoading ===true?
+              <Spin indicator={loadingIcon} />
+              :
             <div className="flex-column" style={{ width: "100%" }}>
-      {GoBusDatas.map((item) => {
-        return <Row>
-            <Col span={1}></Col>
-            <Col span={6}>
-              <div className="bustimeBadge bg-yellow text-primary">
-                {/* {busdata.title} */}
-                未發車
-              </div>
-            </Col>
-            <Col span={6}>
-              <div className="busstation">{item.StopName}</div>
-            </Col>
-            <Col span={2}></Col>
-            <Col span={2}>
-              <Radio className="busradio"></Radio>
-            </Col>
-            <Col span={1}></Col>
-            <Col span={5}>
-              {/* {findDegree(busdata.degree)} */}
-              {/* {console.log(item.index)} */}
-              </Col>
-            <Col span={1}></Col>
-          </Row>
-      })}
-    </div>
+              <Row>
+                <Col span={6}>
+                  {GoBusDatas.map((item) => {
+                    console.log(item.BusStatus);
+                    if(item.BusStatus == 1){
+                      return <div className="bg-yellow bustimeBadge">{item.BusTime}</div>;
+                    }else{
+                      return <div className="bg-primary bustimeBadge">{item.BusTime}</div>;
+                    }
+                  })}
+                </Col>
+                <Col span={10}>
+                  {GoBusDatas.map((item) => {
+                  return <div className="busstation">
+                    {item.Stopname}</div>
+                  })}
+                </Col>
+                <Col span={2}>
+                  <Radio className="busradio"></Radio>
+                </Col>
+                <Col span={1}></Col>
+                <Col span={5}>
+                  {/* {findDegree(busdata.degree)} */}
+                  {/* {console.log(item.index)} */}
+                  </Col>
+                <Col span={1}></Col>
+              </Row>
+            </div>
+            }
           </div>
         </Col>
         <Col xs={2} md={2} xl={2} className="bg-light"></Col>
