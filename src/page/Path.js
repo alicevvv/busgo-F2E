@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import BusStation from "../component/BusStation";
 import busdata from "../json/BusData.json";
 import { getAllRoutes,getBusGoStop } from "../api/busApi";
-import { useEffect } from "react/cjs/react.development";
+import { useEffect } from "react";
 
 const { Search } = Input;
 const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
