@@ -84,14 +84,6 @@ function Home() {
               <Option value="查詢路線/站牌">查詢路線/站牌</Option>
               <Option value="查詢目的地">查詢目的地</Option>
             </Select>
-            {/* <Search
-              placeholder="輸入公車路線/站牌"
-              // id="route_input"
-              style={{ width: "295px", fontSize: 16, marginBottom: "100px" }}
-              onSearch={onSearch}
-              list="data"
-              enterButton
-            /> */}
             <div className="d-flex flex-row"
             style={{marginBottom: "100px"}}
             >
@@ -102,7 +94,7 @@ function Home() {
               id="searchInput"
               onChange={getSearchName}
             />
-            <Link to={`./path:${getBusName}`}>
+            <Link to={`path:${getBusName}`}>
               <Button type="primary" icon={<SearchOutlined />}
               style={{width:'49px',height:'35px'}}
               />
