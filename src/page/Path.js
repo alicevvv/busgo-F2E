@@ -2,11 +2,13 @@ import MyNav from "../component/MyNav";
 import MyFooter from "../component/Footer";
 import { Row, Col, Divider, Input, Space, Radio, Modal, Button, Spin } from "antd";
 import { QuestionCircleOutlined,LoadingOutlined} from "@ant-design/icons";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import BusStation from "../component/BusStation";
 import busdata from "../json/BusData.json";
 import { getAllRoutes,getBusGoStop } from "../api/busApi";
 import { useEffect } from "react";
+import { StoreContext } from "../store";
+
 
 const { Search } = Input;
 const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
@@ -20,11 +22,11 @@ const findDegree = (degree) => {
 
 
 export default function Path() {
-  // console.log(pathname.value);
   // alert(pathname);
   // model
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isLoading,setIsLoading] = useState(true);
+  const {state:{searching}} = useContext(StoreContext);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -58,8 +60,8 @@ export default function Path() {
   async function getBusGotoStops(value){
       const allBusGoStops = await getBusGoStop(value);
       setGoBusDatas(allBusGoStops);
-      // setStartStop(allBusGoStops.StopName)
-      // setLastStop(allBusGoStops[allBusGoStops.length - 1].StopName)
+      setStartStop(allBusGoStops[0].Stopname);
+      setLastStop(allBusGoStops[allBusGoStops.length - 1].Stopname);
   }
   async function getBusTime(value){
     // const allTime = await getBusGoTime(value);
@@ -68,11 +70,13 @@ export default function Path() {
   const [busName,setBusName]=useState([]);
   useEffect(()=>{
     getRoutes();
-    getBusGotoStops(278);
-    setBusName(278);
+    getBusGotoStops(searching.busName);
+    setBusName(searching.busName);
     setTimeout(()=>{
       setIsLoading(false);
     },2000);
+    // console.log('SearchBus:')
+    // console.log(SearchBus.name)
     // getBusTime(278);
   },[]);
   // search
@@ -163,24 +167,22 @@ export default function Path() {
           <div
           className="mb-4"
             style={{
-              marginTop: "40px",
+              marginTop: "30px",
               display: "flex",
               flexDirection: "row",
               justifyContent: "center",
               alignItems: "start",
-              maxHeight: "55vh",
+              height: "calc(100vh - 387px)",
               overflowY: "scroll",
             }}
           >
-            { console.log(isLoading),
-              isLoading ===true?
+            { isLoading ===true?
               <Spin indicator={loadingIcon} />
               :
             <div className="flex-column" style={{ width: "100%" }}>
               <Row>
                 <Col span={6}>
                   {GoBusDatas.map((item) => {
-                    console.log(item.BusStatus);
                     if(item.BusStatus == 1){
                       return <div className="bg-yellow bustimeBadge">{item.BusTime}</div>;
                     }else{
@@ -195,12 +197,19 @@ export default function Path() {
                   })}
                 </Col>
                 <Col span={2}>
-                  <Radio className="busradio"></Radio>
+                  {
+                   GoBusDatas.map(()=>{
+                     return <div className="radioWrapper">
+                       <div className="busCircle"></div>
+                        {/* <div className="circleLine"></div> */}
+                       {/* <Radio className="busradio"></Radio> */}
+                       </div>
+                   })
+                  }
                 </Col>
                 <Col span={1}></Col>
                 <Col span={5}>
                   {/* {findDegree(busdata.degree)} */}
-                  {/* {console.log(item.index)} */}
                   </Col>
                 <Col span={1}></Col>
               </Row>

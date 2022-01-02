@@ -7,17 +7,18 @@ import { Link } from "react-router-dom";
 import { useState ,useEffect, useContext} from "react";
 import searchOption from "../json/searchOption.json"
 import { getAllRoutes, getNews } from "../api/busApi";
+import { setSearchName } from "../action/index";
 import { StoreContext } from "../store";
+import { useDispatch } from "react-redux";
 
 const { Option } = Select;
-const { Search } = Input;
 const { Title } = Typography;
 
 
 function Home() {
   const [routeData,setRouteData]= useState([]);
   const [newsData,setNewsData] = useState([]);
-  // const {state:{ busName }, dispatch} = useContext(StoreContext);
+  const { state: { searching }, dispatch } = useContext(StoreContext);
   // console.log(busName);
 
   // async function _search_options(searchName) {
@@ -65,6 +66,10 @@ function Home() {
   
   const getSearchName=()=>{
     var val = document.getElementById('searchInput').value;
+    console.log('search val');
+    console.log(val);
+    setSearchName(dispatch,val)
+    console.log(searching)
     setBusName(val);
   }
 
@@ -92,13 +97,14 @@ function Home() {
               style={{ width: "249px", fontSize: 16}}
               list="data"
               id="searchInput"
-              onChange={getSearchName}
+              
             />
-            <Link to={`path:${getBusName}`}>
+            <Link to={`path:${getBusName}`} onClick={getSearchName}>
               <Button type="primary" icon={<SearchOutlined />}
               style={{width:'49px',height:'35px'}}
               />
             </Link>
+            {/* <button onClick={getSearchName}></button> */}
             
             </div>
             <datalist id="data" style={{height:'5em',overflow:'hidden'}}>

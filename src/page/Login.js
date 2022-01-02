@@ -69,6 +69,7 @@ export default function Login() {
                 <span className="text-white">登入會員</span>
               </Button>
             </Link>
+            <span className="mt-3">or<Link to={`/member`} className="hover-underline" style={{marginLeft:'0.5rem'}}>加入會員</Link></span>
           </div>
         </Col>
         <Col xs={3} md={3} lg={3} className="bg-light"></Col>

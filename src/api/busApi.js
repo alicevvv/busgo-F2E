@@ -42,29 +42,7 @@ export const getBusGoStop = async(busName)=>{
                         return;
                     }
                 }
-                // console.log('out each');
             })
-            // let first = [{route:'123'},{route:'444'},{route:'555'},{route:'666'},{route:'777'}];
-            // let second = [{name:'555',time:'23'},{name:'777',time:'21'},{name:'123',time:'64'},{name:'666',time:'23'},{name:'444',time:'12'}];
-            // first.forEach((element)=>{
-            //     var BreakException = {};
-
-            //     for (let el of second){
-            //         console.log(el.name);
-            //         if(el.name === '123') {
-            //             console.log('same and break');
-            //             return;
-            //         }
-            //     }
-            // })
-            // getTime.forEach((element)=>{
-            //     goData.forEach((mainData)=>{
-            //         if(element.busStop === mainData.StopName){
-            //             console.log('true');
-            //             return false;
-            //         }
-            //     })
-            // })
         }
         return goData;
     }catch(err){
@@ -87,7 +65,7 @@ async function getBusGoTime(busName){
 
                 // }
                 turnToMin = Math.round(element.EstimateTime/60)
-                if(turnToMin == '1' || turnToMin == '2'){
+                if(turnToMin === '1' || turnToMin === '2'){
                     turnToMin = '進站中';
                     busTimeStatus = '1';
                 }else if (turnToMin > '2'){
