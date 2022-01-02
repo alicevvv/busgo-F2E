@@ -1,16 +1,30 @@
+/* 
+FIND:
+display
+padding
+margin
+background color
+button
+text
+custom layout
+
+ */
 :root {
   --deep-gray: #343e4b;
   --light-gray: #fbfbfb;
   --yellow: #e2a12e;
   --orange: #f17400;
   --white: #ffffff;
-  --light-bg: #fbfbf8;
+  /* --light-bg: #fbfbf8; */
+  --light-bg: #e9e9be;
   --secondary: #999fa5;
 }
 
 html {
   width: 100vw !important;
   overflow-x: hidden;
+  background-size: contain;
+  background-position: center;
 }
 
 body,
@@ -38,6 +52,10 @@ span {
   background-color: var(--deep-gray);
 }
 
+.h-100 {
+  height: 100%;
+}
+
 /* display */
 
 .d-flex {
@@ -57,6 +75,12 @@ span {
   flex-direction: column;
 }
 
+.justify-content-center {
+  justify-content: center;
+}
+.justify-content-between {
+  justify-content: space-between;
+}
 .justify-content-end {
   justify-content: flex-end;
 }
@@ -99,6 +123,12 @@ span {
 
 /* margin */
 
+.mr-2 {
+  margin-right: 0.5rem;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
 .mb-4 {
   margin-bottom: 1.5rem;
 }
@@ -164,6 +194,12 @@ span {
   border: none;
   font-size: 1.5rem;
 }
+.btn-member-info {
+  color: #979ca2;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
 
 .menuBar a {
   padding: 0.75rem 2rem !important;
@@ -183,6 +219,10 @@ span {
   text-decoration: underline;
 }
 /* text */
+h1,
+h4 {
+  letter-spacing: 0.15rem;
+}
 
 .text-white {
   color: var(--white) !important;
@@ -192,6 +232,16 @@ span {
 
 .text-primary {
   color: var(--deep-gray) !important;
+}
+.text-yellow {
+  color: var(--yellow) !important;
+}
+
+.text-size-14 {
+  font-size: 14px;
+}
+.text-size-16 {
+  font-size: 16px;
 }
 
 .weight700 {
@@ -258,14 +308,17 @@ span {
 }
 .register-input {
   width: 100%;
-  height: 60px !important;
+  height: 52px !important;
   border: 1px solid var(--deep-gray) !important;
-  margin-bottom: 1rem !important;
 }
 
-.registerInputs .ant-form-item-required {
+.registerInputs .ant-form-item-label label {
   height: 58px;
   line-height: 20px !important;
+}
+
+.registerInputs .ant-input-number-input {
+  height: 52px;
 }
 
 /* radio */
@@ -372,6 +425,40 @@ span {
   padding: 12px 0px;
   text-align: center;
   vertical-align: middle;
+}
+
+/* custom layout */
+.member-card {
+  border: 1.5px solid var(--deep-gray);
+  border-radius: 24px;
+  padding: 1.6rem 2rem;
+  background: #ffffff;
+  min-height: 280px;
+  box-shadow: 0px 4px 6px rgba(52, 62, 75, 0.15);
+  margin-bottom: 1rem;
+}
+
+/* scrollbar */
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--light-gray);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--secondary);
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--deep-gray);
+  border-radius: 4px;
 }
 
 @media (min-width: 1025px) {

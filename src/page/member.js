@@ -1,14 +1,13 @@
-import { Button, Row, Col,Form,Input,Checkbox} from "antd";
 import MyNav from "../component/MyNav";
 import MyFooter from "../component/Footer";
-import Register from '../component/Register';
+import Memberinfo from "../component/Memberinfo";
 import React,{useState}from 'react';
 
-export default function Member(){
+export default function MyMember(){
     return(
-        <div className="wrapper">
+    <div className="wrapper">
         <MyNav/>
-        <Register/>
+        <Memberinfo/>
         <MyFooter/>
     </div>
     )

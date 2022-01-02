@@ -43,7 +43,7 @@ export default function Login() {
               src="./img/busgo_logo.svg"
               style={{ width: "112px", marginBottom: "1em" }}
             />
-            <span className="loginInputs">
+            <span className="loginInputs mt-3">
               <Input placeholder="帳號 / username" style={{ width: "100%" }} />
               <Input placeholder="密碼 / password" style={{ width: "100%" }} />
             </span>
@@ -61,7 +61,7 @@ export default function Login() {
                 忘記密碼?
               </Button>
             </div>
-            <Link to={`/`} style={{ width: "100%" }}>
+            <Link to="/signin" style={{ width: "100%" }}>
               <Button
                 className="btn-primary hover-border"
                 style={{ width: "100%", height: "60px", marginTop: "1rem" }}
