@@ -9,6 +9,7 @@ import {
   InputNumber,
 } from "antd";
 import { Link } from "react-router-dom";
+import { getUsersData } from "../action/index";
 
 const { Option } = Select;
 const { Search } = Input;
@@ -18,6 +19,7 @@ const onSearch = (value) => console.log(value);
 export default function Register() {
   const onFinish = (values) => {
     console.log("Success:", values);
+    getUsersData(values);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -108,7 +110,7 @@ export default function Register() {
                 <Input className="register-input" />
               </Form.Item>
               <Form.Item
-                name={["user", "age"]}
+                name={"age"}
                 label="年齡"
                 rules={[
                   {
@@ -120,17 +122,22 @@ export default function Register() {
               >
                 <InputNumber className="register-input" />
               </Form.Item>
+              <Form.Item>
+                <Link to={`/login`} style={{ width: "100%" }}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="btn-primary hover-border btn-register"
+                    style={{ height: "60px", marginTop: " 1rem" }}
+                  >
+                    <span className="text-white">申請</span>
+                  </Button>
+                </Link>
+              </Form.Item>
             </Form>
           </span>
-          <Link to={`/login`} style={{ width: "100%" }}>
-            <Button
-              className="btn-primary hover-border"
-              style={{ width: "100%", height: "60px", marginTop: "1rem" }}
-            >
-              <span className="text-white">申請</span>
-            </Button>
-          </Link>
-          <span className="mt-3">
+          {/* <Link to={`/login`} style={{ width: "100%" }}></Link> */}
+          <span className="mt-3" style={{ marginBottom: "2rem" }}>
             or
             <Link
               to={`/login`}

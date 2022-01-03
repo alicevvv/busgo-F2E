@@ -2,13 +2,19 @@ import { Collapse } from "antd";
 import { Row, Col, Button } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import { Link, NavLink } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
+import { StoreContext } from "../store";
+
 
 export default function MyNav() {
   const [isActive, setActive] = useState("false");
   const handleToggle = () => {
     setActive(!isActive);
   };
+  const {
+    state: { loginInfo,loginState },
+    dispatch,
+  } = useContext(StoreContext);
   return (
     <div className="">
       <Row className="nav">
@@ -40,7 +46,7 @@ export default function MyNav() {
           >
             <div className="d-flex align-items-center">
               <div className="menuBar">
-                <NavLink to="/news" className="p-3">
+                <NavLink to="/" className="p-3">
                   最新消息
                 </NavLink>
                 <NavLink to="/" className="p-3">
@@ -53,7 +59,10 @@ export default function MyNav() {
                   乘客服務
                 </NavLink>
                 <NavLink to="/login" className="p-3 btn-primary btn-login">
-                  會員登入
+                  {loginState === true?
+                  <span className="text-yellow text-size-14">{loginInfo.email}</span>:
+                  <span className="text-white text-size-14">會員登入</span>
+                  }                  
                 </NavLink>
               </div>
             </div>

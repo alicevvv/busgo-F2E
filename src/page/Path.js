@@ -5,7 +5,7 @@ import { QuestionCircleOutlined,LoadingOutlined} from "@ant-design/icons";
 import React, { useContext, useState } from "react";
 import BusStation from "../component/BusStation";
 import busdata from "../json/BusData.json";
-import { getAllRoutes,getBusGoStop } from "../api/busApi";
+import { getAllRoutes,getBusGoStop,getBusBackStop } from "../api/busApi";
 import { useEffect } from "react";
 import { StoreContext } from "../store";
 
@@ -55,15 +55,24 @@ export default function Path() {
   }
 
   const [GoBusDatas, setGoBusDatas]=useState([]);
+  const [BackBusDatas, setBackBusDatas] = useState([]);
+  const [direction,setdirection] = useState('go');
+  const [nowDatas, setNowDatas]=useState([]);
   const [startStop,setStartStop] = useState('');
   const [lastStop,setLastStop] = useState('');
   async function getBusGotoStops(value){
       const allBusGoStops = await getBusGoStop(value);
       setGoBusDatas(allBusGoStops);
+      setNowDatas(allBusGoStops);
+      // const allBusBackStops = [...allBusGoStops].reverse();
+      // setBackBusDatas(allBusBackStops);
       setStartStop(allBusGoStops[0].Stopname);
       setLastStop(allBusGoStops[allBusGoStops.length - 1].Stopname);
   }
-  async function getBusTime(value){
+  async function getBusBackStops(value){
+    const allBusBackstop = await getBusBackStop(value);
+    setBackBusDatas(allBusBackstop);
+    setNowDatas(allBusBackstop);
     // const allTime = await getBusGoTime(value);
   }
     
@@ -75,11 +84,9 @@ export default function Path() {
     setTimeout(()=>{
       setIsLoading(false);
     },2000);
-    // console.log('SearchBus:')
-    // console.log(SearchBus.name)
-    // getBusTime(278);
   },[]);
   // search
+
   const onSearch = (value) =>{
     setIsLoading(true);
     setTimeout(()=>{
@@ -87,7 +94,21 @@ export default function Path() {
     },2000);
     getBusGotoStops(value);
     setBusName(value);
-    getBusTime(value);
+    setdirection('go');
+    // getBusTime(value);
+  }
+
+  const backRoute = e =>{
+    // setGoBusDatas(BackBusDatas);
+    console.log(e.target.value);
+    if(e.target.value === "go"){
+      // setNowDatas(GoBusDatas);
+      getBusGotoStops(busName);
+      setdirection('go');
+    }else if (e.target.value==="back"){
+      getBusBackStops(busName);
+      setdirection('back');
+    }
   }
   return (
     <div className="wrapper">
@@ -148,18 +169,18 @@ export default function Path() {
               footer={false}
             >
               <div style={{padding:'20px'}}>
-                <p>起迄站名 : </p>
+                <p className="yellow-rec">起迄站名 : </p>
                 <p>{startStop} - {lastStop}</p>
                 <Divider/>
                 <p>業者服務電話 : 臺北客運 0800-003-307</p>
                 <p>新北市政府交通局公車申訴服務電話 : 02-89682460</p>
               </div>
             </Modal>
-            <Radio.Group name="directionRadioGroup" defaultValue={0}>
+            <Radio.Group name="directionRadioGroup" value={direction} onChange={backRoute}>
               <Space direction="vertical">
-                <Radio value={0}>去程</Radio> 
+                <Radio value={'go'} defaultChecked={true}>去程</Radio> 
                 {/* 往三峽北大社區 */}
-                <Radio value={1}>回程</Radio>
+                <Radio value={'back'}>回程</Radio>
                 {/* 往板橋公車站 */}
               </Space>
             </Radio.Group>
@@ -182,7 +203,7 @@ export default function Path() {
             <div className="flex-column" style={{ width: "100%" }}>
               <Row>
                 <Col span={6}>
-                  {GoBusDatas.map((item) => {
+                  {nowDatas.map((item) => {
                     if(item.BusStatus == 1){
                       return <div className="bg-yellow bustimeBadge">{item.BusTime}</div>;
                     }else{
@@ -191,14 +212,14 @@ export default function Path() {
                   })}
                 </Col>
                 <Col span={10}>
-                  {GoBusDatas.map((item) => {
+                  {nowDatas.map((item) => {
                   return <div className="busstation">
                     {item.Stopname}</div>
                   })}
                 </Col>
                 <Col span={2}>
                   {
-                   GoBusDatas.map(()=>{
+                   nowDatas.map(()=>{
                      return <div className="radioWrapper">
                        <div className="busCircle"></div>
                         {/* <div className="circleLine"></div> */}

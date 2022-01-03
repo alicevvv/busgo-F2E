@@ -2,6 +2,18 @@ import axios from ".";
 
 const baseUrl = `https://ptx.transportdata.tw/MOTC`
 
+const selfUrl = `http://localhost:5000/api/v1`
+
+export const getUsers = async()=>{
+    try{
+        let getData = await axios.get(`${selfUrl}/users`);
+        console.log(getData);
+        return getData.data;
+    }catch(err){
+        alert('error');
+    }
+}
+
 export const getAllRoutes = async()=>{
     try{
         let data=[]
@@ -49,6 +61,35 @@ export const getBusGoStop = async(busName)=>{
         alert('找不到公車去程站牌')
     }
 }
+export const getBusBackStop = async(busName)=>{
+    try{
+        let backData=[]
+        let getData = {}
+        let url = `${baseUrl}/v2/Bus/DisplayStopOfRoute/City/Taipei/${busName}?%24filter=RouteName%2FZh_tw%20eq%20'${busName}'&%24format=JSON`;
+        let result = await axios.get(url);
+        // let finalResult = [...result.data].reverse();
+        console.log(result);
+        const getTime = await getBusBackTime(busName);
+        if(result.data){
+            result.data[1].Stops.forEach((element)=>{
+                for(let el of getTime){
+                    if(el.busStop === element.StopName.Zh_tw){
+                        getData = {
+                            Stopname:element.StopName.Zh_tw,
+                            BusTime:el.busTime,
+                            BusStatus:el.status
+                        }
+                        backData.push(getData);
+                        return;
+                    }
+                }
+            })
+        }
+        return backData;
+    }catch(err){
+        alert('找不到公車回程站牌')
+    }
+}
 // go route time
 async function getBusGoTime(busName){
     try{
@@ -65,7 +106,7 @@ async function getBusGoTime(busName){
 
                 // }
                 turnToMin = Math.round(element.EstimateTime/60)
-                if(turnToMin === '1' || turnToMin === '2'){
+                if(turnToMin < '2' || turnToMin =='2'){
                     turnToMin = '進站中';
                     busTimeStatus = '1';
                 }else if (turnToMin > '2'){
@@ -89,25 +130,48 @@ async function getBusGoTime(busName){
     }
 }
 
-export const getBusBackStop = async(busName)=>{
+// go route time
+async function getBusBackTime(busName){
     try{
-        let backData=[]
-        let getData = {}
-        let url = `${baseUrl}/v2/Bus/DisplayStopOfRoute/City/Taipei/${busName}?%24filter=RouteName%2FZh_tw%20eq%20'${busName}'&%24format=JSON`;
+        let url=`${baseUrl}/v2/Bus/EstimatedTimeOfArrival/City/Taipei/${busName}?%24filter=RouteName%2FZh_tw%20eq%20'${busName}'%20and%20direction%20eq%201&%24format=JSON`;
         let result = await axios.get(url);
+        let data=[]
+        let allData=[]
+        let finalData = []
+        let turnToMin
+        let busTimeStatus
         if(result.data){
-            result.data[1].Stops.forEach((element)=>{
-                getData = {
-                    StopName:element.StopName.Zh_tw
+            result.data.forEach((element)=>{
+                // time = Math.round(element.EstimateTime/60);
+                // if(Math.round(element.EstimateTime/60)){
+
+                // }
+                turnToMin = Math.round(element.EstimateTime/60)
+                if(turnToMin < '2' || turnToMin =='2'){
+                    turnToMin = '進站中';
+                    busTimeStatus = '1';
+                }else if (turnToMin > '2'){
+                    turnToMin = turnToMin+'分鐘';
+                    busTimeStatus = '0';
+                }else{
+                    turnToMin = '未發車';
+                    busTimeStatus = '0';
                 }
-                backData.push(getData);
+                data = {
+                    busStop:element.StopName.Zh_tw,
+                    busTime:turnToMin,
+                    status:busTimeStatus
+                }
+                allData.push(data);
             })
         }
-        return backData;
+        finalData = [...allData].reverse();
+        return(finalData)
     }catch(err){
-        alert('找不到公車回程站牌')
+        alert('找不到回程的公車時間資訊');
     }
 }
+
 
 
 

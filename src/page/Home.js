@@ -5,11 +5,9 @@ import { CaretDownOutlined,SearchOutlined } from "@ant-design/icons";
 import newsdata from "../json/Newsdata.json";
 import { Link } from "react-router-dom";
 import { useState ,useEffect, useContext} from "react";
-import searchOption from "../json/searchOption.json"
-import { getAllRoutes, getNews } from "../api/busApi";
+import { getAllRoutes, getNews ,getBusGoStop} from "../api/busApi";
 import { setSearchName } from "../action/index";
 import { StoreContext } from "../store";
-import { useDispatch } from "react-redux";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -18,6 +16,7 @@ const { Title } = Typography;
 function Home() {
   const [routeData,setRouteData]= useState([]);
   const [newsData,setNewsData] = useState([]);
+  const [GoBusDatas, setGoBusDatas]=useState([]);
   const { state: { searching }, dispatch } = useContext(StoreContext);
   // console.log(busName);
 
@@ -56,20 +55,22 @@ function Home() {
       setNewsData(allData);
     }
   }
+  async function getBusGotoStops(value){
+    const allBusGoStops = await getBusGoStop(value);
+    setGoBusDatas(allBusGoStops);
+}
 
   useEffect(()=>{
     getRoutes();
     getRecentNews();
+    getBusGotoStops('278');
   },[]);
 
   const [getBusName,setBusName] = useState();
   
   const getSearchName=()=>{
     var val = document.getElementById('searchInput').value;
-    console.log('search val');
-    console.log(val);
     setSearchName(dispatch,val)
-    console.log(searching)
     setBusName(val);
   }
 

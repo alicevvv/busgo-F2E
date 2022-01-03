@@ -1,4 +1,4 @@
-import { SEARCH_NAME } from "../action";
+import { SEARCH_NAME,LOGIN,LOGIN_STATE ,GET_USERS} from "../action";
 import { useReducer,createContext } from "react";
 // import{createStore} from "redux";
 
@@ -16,16 +16,49 @@ export const StoreContext = createContext();
 const initialState = {
     searching:{
         busName:"278",
+    },
+    loginInfo:{
+        email:"",
+        password:""
+    },
+    loginState:false,
+    userData:{
+        email:"",
+        password:"",
+        name:"",
+        age:0,
     }
 }
 
 function reducer(state,action){
     switch (action.type){
         case SEARCH_NAME:
-            console.log(action.payload)
             return{
                 ...state,
                 searching:{busName:action.payload}
+            }
+        case LOGIN:
+            return{
+                ...state,
+                loginInfo:{
+                    email:action.payload.username,
+                    password:action.payload.password
+                }
+            }
+        case LOGIN_STATE:
+            return{
+                ...state,
+                loginState:action.payload
+            }
+        case GET_USERS:
+            return{
+                ...state,
+                userData:{
+                    email:action.payload.email,
+                    password:action.payload.password,
+                    name:action.payload.name,
+                    age:action.payload.age
+                }
             }
         default:
             return state;
