@@ -7,7 +7,7 @@ import { StoreContext } from "../store";
 
 
 export default function MyNav() {
-  const [isActive, setActive] = useState("false");
+  const [isActive, setActive] = useState(false);
   const handleToggle = () => {
     setActive(!isActive);
   };
@@ -46,10 +46,10 @@ export default function MyNav() {
           >
             <div className="d-flex align-items-center">
               <div className="menuBar">
-                <NavLink to="/" className="p-3">
+                <NavLink to="/news" className="p-3">
                   最新消息
                 </NavLink>
-                <NavLink to="/" className="p-3">
+                {/* <NavLink to="/" className="p-3">
                   附近站牌
                 </NavLink>
                 <NavLink to="/" className="p-3">
@@ -57,7 +57,7 @@ export default function MyNav() {
                 </NavLink>
                 <NavLink to="/" className="p-3">
                   乘客服務
-                </NavLink>
+                </NavLink> */}
                 <NavLink to="/login" className="p-3 btn-primary btn-login">
                   {loginState === true?
                   <span className="text-yellow text-size-14">{loginInfo.email}</span>:
@@ -72,7 +72,7 @@ export default function MyNav() {
       </Row>
       <Row>
         <Col xs={24} ms={24} xl={0} style={{ zIndex: "0" }}>
-          <div className={`w100 mb-4 xs_navbar ${isActive ? "d-none" : ""}`}>
+          <div className={`w100 mb-4 xs_navbar ${isActive? "" : "d-none"}`}>
             <Link to="./login" className="xs_nav bg-primary text-white">
               <div className="bg-primary py-3">會員登入/會員註冊</div>
             </Link>

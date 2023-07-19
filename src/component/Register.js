@@ -9,7 +9,7 @@ import {
   InputNumber,
 } from "antd";
 import { Link } from "react-router-dom";
-import { getUsersData } from "../action/index";
+// import { getUsersData } from "../action/index";
 
 const { Option } = Select;
 const { Search } = Input;
@@ -17,10 +17,10 @@ const { Title } = Typography;
 const onSearch = (value) => console.log(value);
 
 export default function Register() {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-    getUsersData(values);
-  };
+  // const onFinish = (values) => {
+  //   console.log("Success:", values);
+  //   getUsersData(values);
+  // };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);

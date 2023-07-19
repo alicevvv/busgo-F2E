@@ -2,7 +2,7 @@ import { Button, Row, Col, Typography } from "antd";
 import { Link } from "react-router-dom";
 
 
-const { Text,myLink } = Typography;
+const { Text } = Typography;
 
 export default function MyFooter() {
   return (
@@ -26,9 +26,9 @@ export default function MyFooter() {
       >
         <div className="flex-column p-3">
           <Text className="text-white">CONTACT US</Text>
-          <myLink href="" target="_blank" className="text-white op-075">
+          <div href="" target="_blank" className="text-white op-075">
             taiwan_busgo@mail.bus.tw
-          </myLink>
+          </div>
         </div>
       </Col>
     </Row>

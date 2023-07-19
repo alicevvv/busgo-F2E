@@ -4,7 +4,7 @@ BusGo! 參考了各大公車平台，保留重要功能的同時也簡化頁面�
 
 ## 系統說明
 
-專案運行方式是使用 `yarn add ...`、`yarn start`...
+專案運行方式是使用 `yarn install`、`yarn start`
 
 
 ## 資料夾說明
@@ -12,7 +12,6 @@ BusGo! 參考了各大公車平台，保留重要功能的同時也簡化頁面�
 -- img - 使用圖片
 -src
 -- component - 共用元件：header、footer
--- json - 資料
 -- page - 各頁面
 
 ## 使用技術

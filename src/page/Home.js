@@ -2,12 +2,14 @@ import MyNav from "../component/MyNav";
 import MyFooter from "../component/Footer";
 import { Row, Col, Select, Input, Typography, List, Button } from "antd";
 import { CaretDownOutlined,SearchOutlined } from "@ant-design/icons";
-import newsdata from "../json/Newsdata.json";
+// import newsdata from "../json/Newsdata.json";
 import { Link } from "react-router-dom";
 import { useState ,useEffect, useContext} from "react";
 import { getAllRoutes, getNews ,getBusGoStop} from "../api/busApi";
 import { setSearchName } from "../action/index";
 import { StoreContext } from "../store";
+import { useNavigate } from "react-router-dom";
+import { log } from "@craco/craco/lib/logger";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -18,14 +20,7 @@ function Home() {
   const [newsData,setNewsData] = useState([]);
   const [GoBusDatas, setGoBusDatas]=useState([]);
   const { state: { searching }, dispatch } = useContext(StoreContext);
-  // console.log(busName);
-
-  // async function _search_options(searchName) {
-  //   setRouteData([]);
-  //   console.log(searchName);
-  //   if(searchName.value==='none') return;
-  //   const allRoutes = await getAllRoutes(searchName.value);
-  // }
+  const navigate = useNavigate();
 
   async function getRoutes(){
     let nameDatas = [];
@@ -34,7 +29,8 @@ function Home() {
     if(allRoutes){
       for(let i=0;i< allRoutes.length;i++){
         const nameData={
-          routeName: allRoutes[i].routeName
+          value: allRoutes[i].routeName,
+          label: allRoutes[i].routeName
         };
         nameDatas.push(nameData);
       }
@@ -42,18 +38,9 @@ function Home() {
     }
   }
   async function getRecentNews(){
-    let allData = [];
     setNewsData([]);
     const allNews = await getNews();
-    if(allNews){
-      for(let i=0;i<allNews.length;i++){
-        const data={
-          title: allNews.newsTitle
-        }
-        allData.push(data);
-      }
-      setNewsData(allData);
-    }
+    setNewsData(allNews);
   }
   async function getBusGotoStops(value){
     const allBusGoStops = await getBusGoStop(value);
@@ -74,49 +61,47 @@ function Home() {
     setBusName(val);
   }
 
+  const handleSearch=(value)=>{
+    setSearchName(dispatch,value);
+    navigate(`/path:${value}`)
+  }
+
   return (
     <div className="wrapper">
       <MyNav />
       <Row className="minh">
         <Col xs={24} md={24} xl={12}>
           <div className="flex-column align-items-center mt-3">
-            <Select
-              suffixIcon={<CaretDownOutlined style={{ color: "#343E4B" }} />}
-              defaultValue="查詢路線/站牌"
-              style={{ width: 160, fontSize: "18px" }}
-              bordered={false}
-              className="mb-4 weight700"
-            >
-              <Option value="查詢路線/站牌">查詢路線/站牌</Option>
-              <Option value="查詢目的地">查詢目的地</Option>
-            </Select>
+            <div className="mb-4" style={{fontSize: "16px"}}>
+              查詢路線/站牌
+            </div>
             <div className="d-flex flex-row"
             style={{marginBottom: "100px"}}
             >
-            <Input
+            <Select
+              showSearch
               placeholder="輸入公車路線/站牌"
+              optionFilterProp="children"
+              filterOption={(input, option) => (option?.label ?? '').includes(input)}
+              filterSort={(optionA, optionB) =>
+                (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+              }
               style={{ width: "249px", fontSize: 16}}
-              list="data"
+              options={routeData}
+              onSelect={handleSearch}
               id="searchInput"
-              
-            />
-            <Link to={`path:${getBusName}`} onClick={getSearchName}>
+            >
+            </Select>
+            {/* <Link to={`path:${getBusName}`} onClick={getSearchName}>
               <Button type="primary" icon={<SearchOutlined />}
               style={{width:'49px',height:'35px'}}
               />
-            </Link>
-            {/* <button onClick={getSearchName}></button> */}
-            
+            </Link> */}
             </div>
-            <datalist id="data" style={{height:'5em',overflow:'hidden'}}>
-              {routeData.map((item)=>
-              <option value={item.routeName}></option>
-              )}
-            </datalist>
             <img src="./img/mascot.svg"></img>
           </div>
         </Col>
-        <Col xs={0} sm={0} md={0} xl={12} className="bg-light">
+        <Col xs={24} sm={24} md={24} xl={12} className="bg-light">
           <div className="flex-column align-items-center mt-3">
             <div
               className="flex-row"
@@ -133,10 +118,13 @@ function Home() {
             </div>
             <List
               bordered
-              dataSource={newsdata}
+              dataSource={newsData}
+              style={{maxWidth:'480px'}}
               renderItem={(item) => (
                 <List.Item>
-                  <Link to="./">{item}</Link>
+                  <Link to={`./news`}
+                    style={{maxWidth:'440px',whiteSpace:'nowrap',overflow:'hidden', textOverflow:'ellipsis'}}
+                  >{item.newsTitle}</Link>
                 </List.Item>
               )}
             />

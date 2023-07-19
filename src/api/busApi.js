@@ -3,23 +3,29 @@ import axios from ".";
 const baseUrl = `https://ptx.transportdata.tw/MOTC`
 
 const selfUrl = `http://localhost:5000/api/v1`
+const tdxUrl = `https://tdx.transportdata.tw/api/basic/v2`
 
-export const getUsers = async()=>{
-    try{
-        let getData = await axios.get(`${selfUrl}/users`);
-        console.log(getData);
-        return getData.data;
-    }catch(err){
-        alert('error');
-    }
-}
+// export const getUsers = async()=>{
+//     try{
+//         let getData = await axios.get(`${selfUrl}/users`);
+//         console.log(getData);
+//         return getData.data;
+//     }catch(err){
+//         alert('error');
+//     }
+// }
 
 export const getAllRoutes = async()=>{
     try{
         let data=[]
         let routeData = {}
-        let url = `${baseUrl}/v2/Bus/Route/City/Taipei?$select=RouteName&$format=JSON`
-        let result = await axios.get(url);
+        let url = `${tdxUrl}/Bus/Route/City/Taipei`
+        let result = await axios.get(url,{
+            headers:{
+                'client_id' : "g111034018-57ed97e2-2180-4d7a",
+                'client_secret':"0017be3a-0910-4835-b3c1-ab1793c3533f"
+            }
+        });
         if(result.data){
             for(let i=0;i<result.data.length;i++){
                 routeData = {
@@ -178,14 +184,19 @@ async function getBusBackTime(busName){
 //bus news
 export const getNews = async()=>{
     try{
-        let url=`${baseUrl}/v2/Bus/News/City/Taipei?%24top=7&%24format=JSON`;
+        let url=`${baseUrl}/v2/Bus/News/City/Taipei?%24format=JSON`;
         let result = await axios.get(url);
         let allData=[]
         let getData=[]
         if(result.data){
             result.data.forEach((element)=>{
                 getData={
-                    newsTitle:element.Title
+                    newsId:element.NewsID,
+                    newsDepartment:element.Department,
+                    newsTitle:element.Title,
+                    newsDescription:element.Description,
+                    newsPublishTime:element.PublishTime,
+                    newsUpdateTime:element.UpdateTime
                 }
                 allData.push(getData);
             })

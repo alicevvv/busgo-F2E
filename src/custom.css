@@ -39,15 +39,15 @@ span {
 
 .wrapper {
   width: 100vw;
-  min-height: calc(100vh - 280px) !important;
+  min-height: calc(100vh - 80px) !important;
 }
 
 .nav {
-  min-height: 140px;
+  min-height: 80px;
 }
 
 .footer {
-  min-height: 140px;
+  min-height: 80px;
   background-color: var(--deep-gray);
 }
 
@@ -155,7 +155,7 @@ span {
 }
 
 .minh {
-  min-height: calc(100vh - 280px) !important;
+  min-height: calc(100vh - 160px) !important;
   /* min-height: 665px; */
 }
 

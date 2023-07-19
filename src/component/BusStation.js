@@ -6,17 +6,6 @@ import { useEffect } from "react/cjs/react.development";
 
 
 export default function BusStation() {
-  // const number = number;
-  // console.log('in busstation : '+ number);
-  // async function getBusInfo(value){
-  //   let busData = [];
-  //   const allBusData = await getBusGoStop(value);
-  //   console.log('in log');
-  //   console.log(allBusData);
-  // }
-  // useEffect(()=>{
-  //   getBusInfo(value);   
-  // })
 
   return (
     <>

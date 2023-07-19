@@ -1,32 +1,39 @@
 import MyNav from "../component/MyNav";
 import MyFooter from "../component/Footer";
-import { Row, Col, Divider, Input, Space, Radio, Modal, Button, Spin } from "antd";
+import { Row, Col, Divider, Input, Space, Radio, Modal, Button, Spin, Select } from "antd";
 import { QuestionCircleOutlined,LoadingOutlined} from "@ant-design/icons";
 import React, { useContext, useState } from "react";
-import BusStation from "../component/BusStation";
-import busdata from "../json/BusData.json";
 import { getAllRoutes,getBusGoStop,getBusBackStop } from "../api/busApi";
 import { useEffect } from "react";
+// import { useDispatch } from "react-redux";
 import { StoreContext } from "../store";
-
-
-const { Search } = Input;
+import { useNavigate, useLocation } from "react-router-dom";
+import { setSearchName } from "../action/index";
+import { useDispatch } from "react-redux";
 const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-const findDegree = (degree) => {
-  if (degree === "normal") {
-    return <div className="busdegree degree-yellow">FAD-061</div>;
-  } else if (degree === "high") {
-    return <div className="busdegree degree-orange">FAD-053</div>;
-  }
-};
 
 
 export default function Path() {
-  // alert(pathname);
   // model
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isLoading,setIsLoading] = useState(true);
-  const {state:{searching}} = useContext(StoreContext);
+  const {state:{searching}, dispatch} = useContext(StoreContext);
+  const [routeData,setRouteData]=useState([]);
+  const [searchBusName,setSearchBusName] = useState();
+  const [busName,setBusName]=useState([]);
+  const [GoBusDatas, setGoBusDatas]=useState([]);
+  const [BackBusDatas, setBackBusDatas] = useState([]);
+  const [direction,setdirection] = useState('go');
+  const [nowDatas, setNowDatas]=useState([]);
+  const [startStop,setStartStop] = useState('');
+  const [lastStop,setLastStop] = useState('');
+
+  const location = useLocation();
+
+
+
+  const navigate = useNavigate();
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -37,7 +44,6 @@ export default function Path() {
     setIsModalVisible(false);
   };
   // route data
-  const [routeData,setRouteData]=useState([]);
 
   async function getRoutes(){
     let nameDatas = [];
@@ -46,7 +52,8 @@ export default function Path() {
     if(allRoutes){
       for(let i=0;i<allRoutes.length;i++){
         const nameData = {
-          routeName: allRoutes[i].routeName
+          value: allRoutes[i].routeName,
+          label:allRoutes[i].routeName
         };
         nameDatas.push(nameData);
       }
@@ -54,12 +61,7 @@ export default function Path() {
     }
   }
 
-  const [GoBusDatas, setGoBusDatas]=useState([]);
-  const [BackBusDatas, setBackBusDatas] = useState([]);
-  const [direction,setdirection] = useState('go');
-  const [nowDatas, setNowDatas]=useState([]);
-  const [startStop,setStartStop] = useState('');
-  const [lastStop,setLastStop] = useState('');
+  
   async function getBusGotoStops(value){
       const allBusGoStops = await getBusGoStop(value);
       setGoBusDatas(allBusGoStops);
@@ -76,17 +78,6 @@ export default function Path() {
     // const allTime = await getBusGoTime(value);
   }
     
-  const [busName,setBusName]=useState([]);
-  useEffect(()=>{
-    getRoutes();
-    getBusGotoStops(searching.busName);
-    setBusName(searching.busName);
-    setTimeout(()=>{
-      setIsLoading(false);
-    },2000);
-  },[]);
-  // search
-
   const onSearch = (value) =>{
     setIsLoading(true);
     setTimeout(()=>{
@@ -96,6 +87,10 @@ export default function Path() {
     setBusName(value);
     setdirection('go');
     // getBusTime(value);
+  }
+
+  const getSearchBusName = ()=>{
+
   }
 
   const backRoute = e =>{
@@ -110,6 +105,42 @@ export default function Path() {
       setdirection('back');
     }
   }
+
+  const selectSearch = (value) =>{
+    setIsLoading(true);
+    setTimeout(()=>{
+      setIsLoading(false);
+    },2000);
+    setBusName(value)
+    getBusGotoStops(value);
+    setdirection('go');
+
+    setSearchName(dispatch,value)
+    navigate(`/path:${value}`)
+  }
+
+  useEffect(()=>{
+    if(location.pathname.split(':')[1]==''){
+
+      navigate('/')
+    }
+    getRoutes();
+    setBusName(decodeURI(location.pathname.split(':')[1]));
+    getBusGotoStops(decodeURI(location.pathname.split(':')[1]));
+
+    console.log(decodeURI(location.pathname.split(':')[1]));
+    setTimeout(()=>{
+      setIsLoading(false);
+    },2000);
+  },[]);
+
+  
+
+  // const handleSearch = (value) =>{
+  //   setSearchName(dispatch,value);
+  //   navigate(`/path:${value}`)
+  // }
+
   return (
     <div className="wrapper">
       <MyNav />
@@ -119,20 +150,20 @@ export default function Path() {
           md={{ span: 24, offset: 0 }}
           xl={{ span: 8, offset: 2 }}
         >
-          <div className="flex-column align-items-center mt-3">
-            <Search
+          <div className="flex-column align-items-center justify-content-center h100">
+            <Select
+              showSearch
               placeholder="輸入公車路線/站牌"
-              style={{ width: "295px", fontSize: 16 }}
-              onSearch={onSearch}
-              list="data"
-              enterButton
-            />
-            <datalist id="data" style={{height:'5em',overflow:'hidden'}}>
-              {routeData.map((item, index)=>
-              <option value={item.routeName} key={index}></option>
-              )}
-            </datalist>
-            <div style={{ marginTop: "90px" }}>FAD-061</div>
+              optionFilterProp="children"
+              filterOption={(input, option) => (option?.label ?? '').includes(input)}
+              filterSort={(optionA, optionB) =>
+                (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+              }
+              style={{ width: "249px", fontSize: 16, marginBottom:'36px'}}
+              options={routeData}
+              onSelect={selectSearch}
+            >
+            </Select>
             <div className="mt-3">
               <img src="./img/bus_m.svg"></img>
             </div>
@@ -151,6 +182,7 @@ export default function Path() {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+              marginTop:'12px'
             }}
           >
             <span className="font-normal" style={{ fontSize: "24px" }}>
@@ -158,15 +190,14 @@ export default function Path() {
               <Button className="btn-businfo" onClick={showModal}>
                 {<QuestionCircleOutlined />}
               </Button>
-              {/* <div style={{ fontSize: "16px" }}>已收藏個站牌</div> */}
             </span>
             <Modal
               title=""
-              visible={isModalVisible}
               onOk={handleOk}
               onCancel={handleCancel}
               style={{ borderRadius: "20px" }}
               footer={false}
+              visible={isModalVisible}
             >
               <div style={{padding:'20px'}}>
                 <p className="yellow-rec">起迄站名 : </p>
@@ -179,9 +210,7 @@ export default function Path() {
             <Radio.Group name="directionRadioGroup" value={direction} onChange={backRoute}>
               <Space direction="vertical">
                 <Radio value={'go'} defaultChecked={true}>去程</Radio> 
-                {/* 往三峽北大社區 */}
                 <Radio value={'back'}>回程</Radio>
-                {/* 往板橋公車站 */}
               </Space>
             </Radio.Group>
           </div>
@@ -193,7 +222,7 @@ export default function Path() {
               flexDirection: "row",
               justifyContent: "center",
               alignItems: "start",
-              height: "calc(100vh - 387px)",
+              height: "calc(100vh - 277px)",
               overflowY: "scroll",
             }}
           >
@@ -222,16 +251,12 @@ export default function Path() {
                    nowDatas.map(()=>{
                      return <div className="radioWrapper">
                        <div className="busCircle"></div>
-                        {/* <div className="circleLine"></div> */}
-                       {/* <Radio className="busradio"></Radio> */}
                        </div>
                    })
                   }
                 </Col>
                 <Col span={1}></Col>
-                <Col span={5}>
-                  {/* {findDegree(busdata.degree)} */}
-                  </Col>
+                <Col span={5}></Col>
                 <Col span={1}></Col>
               </Row>
             </div>
