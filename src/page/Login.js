@@ -13,7 +13,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { setLogin,setLoginState } from "../action/index";
 import { StoreContext } from "../store";
-import { useState, useEffect, useContext } from "react";
+import React,{ useState, useEffect, useContext } from "react";
 
 export default function Login() {
   const history = useNavigate();

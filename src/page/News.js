@@ -4,7 +4,7 @@ import { Row, Col, Select, Input, Button, Typography, List, Collapse } from "ant
 import { getNews } from "../api/busApi";
 import { CaretRightOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
 
 const { Option } = Select;
 const { Search } = Input;

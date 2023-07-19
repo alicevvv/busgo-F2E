@@ -1,3 +1,4 @@
+import React from "react";
 import { Button, Row, Col, Typography } from "antd";
 import { Link } from "react-router-dom";
 

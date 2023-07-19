@@ -9,6 +9,7 @@ import {
   InputNumber,
 } from "antd";
 import { Link } from "react-router-dom";
+import React from "react";
 // import { getUsersData } from "../action/index";
 
 const { Option } = Select;
@@ -72,7 +73,7 @@ export default function Register() {
             <Form
               {...formLayout}
               initialValues={{ remember: true }}
-              onFinish={onFinish}
+              // onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="off"
               style={{ width: "100%" }}

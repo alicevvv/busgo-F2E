@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.less";
 import "./custom.css";
 import {StoreProvider} from "./store/index";
+import React from "react";
 
 function App() {
   return (

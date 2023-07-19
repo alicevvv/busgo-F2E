@@ -1,7 +1,6 @@
 import { Space, Row, Col, Radio } from "antd";
 import busdata from "../json/BusData.json";
 import {getBusGoStop} from "../api/busApi";
-import { useEffect } from "react/cjs/react.development";
 
 
 

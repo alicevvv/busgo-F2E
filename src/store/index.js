@@ -1,5 +1,5 @@
 import { SEARCH_NAME,LOGIN,LOGIN_STATE ,GET_USERS} from "../action";
-import { useReducer,createContext } from "react";
+import React,{ useReducer,createContext } from "react";
 // import{createStore} from "redux";
 
 // const store = createStore(rootReducer);
